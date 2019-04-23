@@ -5,15 +5,15 @@ AWS.config.update({
     endpoint: "https://dynamodb.us-west-2.amazonaws.com"
 });
 
-function updateDatabase(params) {
+async function updateDatabase(params) {
     const docClient = new AWS.DynamoDB.DocumentClient();
 
-    docClient.update(params, (err, data) => {
-        if (err) {
-            console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-        }
+    await docClient.put(params).promise()
+    .then((data) => {
+        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+    })
+    .catch((err) => {
+        console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
     })
 
     console.log('Updated DynamoDB');
@@ -29,9 +29,10 @@ exports.handler = async (event, context) => {
 
     const queryParams = {
         TableName: 'poke-snap',
-        Key: obj['key'],
+        Item: obj,
+        // Key: obj['key'],
         // UpdateExpression: "set info.rating = :r, info.plot=:p, info.actors=:a",
-        ExpressionAttributeValues: obj['value']
+        // ExpressionAttributeValues: obj['value']
     }
 
     const response = {
@@ -39,11 +40,11 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({
             //   username: event.body['username'], 
             body: event.body,
-            params: params
+            params: obj
         }),
     };
 
-    updateDatabase(queryParams)
+    await updateDatabase(queryParams)
 
     return response;
 };
