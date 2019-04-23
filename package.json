@@ -1,0 +1,22 @@
+{
+  "name": "update-service",
+  "version": "1.0.0",
+  "description": "Update DynamoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poke-snap/update-service.git"
+  },
+  "author": "Sean Takafuji",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/poke-snap/update-service/issues"
+  },
+  "homepage": "https://github.com/poke-snap/update-service#readme",
+  "dependencies": {
+    "aws-sdk": "^2.441.0"
+  }
+}
